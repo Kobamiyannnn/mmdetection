@@ -180,7 +180,7 @@ def plot_confusion_matrix(confusion_matrix,
         confusion_matrix.astype(int)  # category_idの数だから整数であることは保証されている
 
     num_classes = len(labels)
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(9, 8), dpi=100)
     '''
     表示が崩れる（収まりきらない）ため、上のように変更
     fig, ax = plt.subplots(
@@ -267,7 +267,7 @@ def plot_confusion_matrix(confusion_matrix,
     fig.tight_layout()
     if save_dir is not None:
         plt.savefig(
-            os.path.join(save_dir, 'confusion_matrix.png'), format='png')
+            os.path.join(save_dir, 'confusion_matrix.pdf'), format='pdf')
     if show:
         plt.show()
 
