@@ -49,6 +49,7 @@ def plot_curve(log_dicts, args):
 
     # TODO: support dynamic eval interval(e.g. RTMDet) when plotting mAP.
     num_metrics = len(metrics)
+    markers = ["o", "^", "p", "s"]
     for i, log_dict in enumerate(log_dicts):
         epochs = list(log_dict.keys())
         for j, metric in enumerate(metrics):
@@ -66,6 +67,23 @@ def plot_curve(log_dicts, args):
                     'Please reduce the log interval in the config so that '
                     'interval is less than iterations of one epoch.')
 
+            plt.gca().yaxis.set_tick_params(
+                which="both",
+                direction="in",
+                bottom=True,
+                top=True,
+                left=True,
+                right=True
+            )
+            plt.gca().xaxis.set_tick_params(
+                which="both",
+                direction="in",
+                bottom=True,
+                top=True,
+                left=True,
+                right=True
+            )
+
             if 'mAP' in metric:
                 xs = []
                 ys = []
@@ -73,7 +91,8 @@ def plot_curve(log_dicts, args):
                     ys += log_dict[epoch][metric]
                     if log_dict[epoch][metric]:
                         xs += [epoch]
-                plt.xlabel('epoch')
+                plt.xlabel('Epoch')
+                plt.ylabel("mAP")
                 plt.plot(xs, ys, label=legend[i * num_metrics + j], marker='o')
             else:
                 xs = []
@@ -84,10 +103,18 @@ def plot_curve(log_dicts, args):
                     ys.append(np.array(log_dict[epoch][metric][:len(iters)]))
                 xs = np.concatenate(xs)
                 ys = np.concatenate(ys)
-                plt.xlabel('iter')
+                print(xs)
+                plt.xlabel('Iteration')
                 plt.plot(
-                    xs, ys, label=legend[i * num_metrics + j], linewidth=0.5)
+                    xs,
+                    ys,
+                    label=legend[i * num_metrics + j],
+                    linewidth=0.5,
+                    marker=markers[j],
+                    markersize=4
+                )
             plt.legend()
+            plt.tight_layout()
         if args.title is not None:
             plt.title(args.title)
     if args.out is None:
@@ -132,7 +159,7 @@ def add_plot_parser(subparsers):
     parser_plt.add_argument(
         '--backend', type=str, default=None, help='backend of plt')
     parser_plt.add_argument(
-        '--style', type=str, default='dark', help='style of plt')
+        '--style', type=str, default='ticks', help='style of plt')
     parser_plt.add_argument('--out', type=str, default=None)
 
 
