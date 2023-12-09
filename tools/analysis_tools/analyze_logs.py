@@ -36,6 +36,7 @@ def cal_train_time(log_dicts, args):
 def plot_curve(log_dicts, args):
     if args.backend is not None:
         plt.switch_backend(args.backend)
+    plt.figure(figsize=(16, 9), dpi=70)
     sns.set_style(args.style)
     # if legend is None, use {filename}_{key} as legend
     legend = args.legend
@@ -93,7 +94,7 @@ def plot_curve(log_dicts, args):
                         xs += [epoch]
                 plt.xlabel('Epoch')
                 plt.ylabel("mAP")
-                plt.plot(xs, ys, label=legend[i * num_metrics + j], marker='o')
+                plt.plot(xs, ys, label=legend[i * num_metrics + j], marker=markers[j])
             else:
                 xs = []
                 ys = []
@@ -111,7 +112,7 @@ def plot_curve(log_dicts, args):
                     label=legend[i * num_metrics + j],
                     linewidth=0.5,
                     marker=markers[j],
-                    markersize=4
+                    markersize=1
                 )
             plt.legend()
             plt.tight_layout()
